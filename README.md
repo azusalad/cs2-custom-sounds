@@ -30,7 +30,7 @@ pip install playsound3
 Copy the file named `gamestate_integration_consolesample.cfg` to this location:
 
 ```
-Steam/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg/
+Steam/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg/gamestate_integration_consolesample.cfg
 ```
 
 ### Port Configuration
