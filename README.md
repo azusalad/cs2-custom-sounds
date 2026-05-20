@@ -1,9 +1,9 @@
 # CS2 Custom Sounds
 I found a [repository](https://github.com/zzhabib/CS-Jukebox) for Counter-Strike 2 which allows users to play custom sounds upon certain in game events.  This project only seems to work for Windows, so I made my own cross platform version in Python.  The program uses Valve's [game state integration](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration) which lets CS2 send requests tracking in game events.  Therefore, the program is VAC safe.
 
-Demo video showing custom killsound and mvp sound:
+Demo video showing custom killsound, mvp sound, and round start sound:
 
-https://github.com/user-attachments/assets/7b41de0a-fe96-443f-ae05-4d7cf08ad91c
+https://github.com/user-attachments/assets/b7b9b280-c522-4c0c-a0ab-a1457323c3b7
 
 ## Features
 
@@ -49,4 +49,4 @@ Run the program:
 python3 main.py
 ```
 
-Then start CS2.
+Then start CS2.  The program can also be restarted while the game is running.  Note that sounds might not play on the first round.
