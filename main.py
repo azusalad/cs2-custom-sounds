@@ -1,4 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from playsound3 import playsound
 import json
 
 from config import *
@@ -39,18 +40,23 @@ class GSIHandler(BaseHTTPRequestHandler):
           # Round win
           if self.json_get(data, ["previously","player","match_stats","mvps"]):
             print("Mvp won")
+            playsound(MVP_SOUND)
           else:
             print("Round won")
+            playsound(WIN_SOUND)
         else:
           # Round loss
           print("Round loss")
+          playsound(LOSS_SOUND)
 
     # Kill sound
     if self.json_get(data, ["previously", "player", "match_stats", "kills"]):
+      playsound(KILL_SOUND)
       print("Kill")
     
     # Death sound
     if self.json_get(data, ["previously", "player", "match_stats", "deaths"]):
+      playsound(DEATH_SOUND)
       print("Death")
 
     # Print the data nicely
