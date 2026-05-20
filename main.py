@@ -65,11 +65,11 @@ class GSIHandler(BaseHTTPRequestHandler):
         self.play_sound(DEATH_SOUND)
       
       # Round end sound
-      if self.json_get(data, ["previously","round","phase"]) == "live":
-        if self.json_get(data, ["round","phase"]) == "over":
-          if self.json_get(data, ["player","team"]) == self.json_get(data, ["round","win_team"]):
+      if self.json_get(data, ["previously", "round", "phase"]) == "live":
+        if self.json_get(data, ["round", "phase"]) == "over":
+          if self.json_get(data, ["player", "team"]) == self.json_get(data, ["round", "win_team"]):
             # Round win
-            if self.json_get(data, ["previously","player","match_stats","mvps"]):
+            if self.json_get(data, ["previously", "player", "match_stats", "mvps"]):
               self.logger.info("Mvp won")
               self.play_sound(MVP_SOUND)
             else:
@@ -80,6 +80,11 @@ class GSIHandler(BaseHTTPRequestHandler):
             self.logger.info("Round loss")
             self.play_sound(LOSS_SOUND)
 
+      # Round start sound
+      elif self.json_get(data, ["previously", "round", "phase"]) == "over":
+        if self.json_get(data, ["round", "phase"]) == "freezetime":
+          self.logger.info("Round start")
+          self.play_sound(ROUND_START_SOUND)
 
 
     # Send response back to the game

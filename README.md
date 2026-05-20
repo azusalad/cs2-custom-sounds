@@ -13,6 +13,7 @@ Currently, sounds can be added for the following events:
 * Round win
 * Round win (mvp)
 * Round loss
+* Round start
 
 ## Setup
 
