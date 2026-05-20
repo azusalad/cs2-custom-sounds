@@ -1,11 +1,9 @@
 PORT = 4000
-DEBUG = 1
+DEBUG = 0
 
-# Sounds
+# Sounds (.wav or .mp3 files)
 WIN_SOUND = "sounds/your_team_won.wav"
 LOSS_SOUND = "sounds/your_team_lost.mp3"
-MVP_SOUND = ""
+MVP_SOUND = "sounds/your_team_won.wav"
 KILL_SOUND = "sounds/killsound.wav"
 DEATH_SOUND = ""
-
-VOLUME = 0.5
