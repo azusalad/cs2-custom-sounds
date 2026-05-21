@@ -1,23 +1,51 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from playsound3 import playsound
+from pygame import mixer
 from pathlib import Path
 import json
 import logging
 
 from config import *
 
+class Sounds:
+  SOUND_MAP = {
+    "kill": KILL_SOUND,
+    "death": DEATH_SOUND,
+    "loss": LOSS_SOUND,
+    "win": WIN_SOUND,
+    "mvp": MVP_SOUND,
+    "freeze": FREEZETIME_SOUND,
+    "start": START_SOUND,
+    "bomb": BOMB_SOUND
+  }
+
+  # Sounds that require stopping start and bomb sounds first
+  STOPS_ROUND_START = {"loss", "win", "mvp"}
+
+  def __init__(self, logger):
+    mixer.init()
+    self.logger = logger
+    self.sounds = {}
+    for name, filepath in self.SOUND_MAP.items():
+      a = Path(filepath)
+      if a.exists() and filepath != "":
+        sound = mixer.Sound(filepath)
+      else:
+        sound = mixer.Sound("blank.wav")
+      sound.set_volume(VOLUME)
+      self.sounds[name] = sound
+
+  def play_sound(self, sound):
+    if sound in self.STOPS_ROUND_START:
+      self.sounds["start"].stop()
+      self.sounds["bomb"].stop()
+    if sound in self.sounds:
+      self.logger.debug(f"Playing {sound} from {self.SOUND_MAP[sound]}")
+      self.sounds[sound].play()
 
 class GSIHandler(BaseHTTPRequestHandler):
   logger = None
-
-  def play_sound(self, path):
-    a = Path(path)
-    if a.exists() and path != "":
-      self.logger.debug(f"Playing sound at path {path}")
-      playsound(path, block=False)
-    else:
-      self.logger.error(f"File does not exist {path}")
-
+  sounds = None
 
   def json_get(self, data, keys, default_value=""):
     #print(f"json get called with {keys}")
@@ -48,21 +76,17 @@ class GSIHandler(BaseHTTPRequestHandler):
 
     # Print the data nicely
     self.logger.debug(json.dumps(data, indent=2))
-    # print("=" * 60)
-    # print(json.dumps(data, indent=2))
-    # print("=" * 60)
-    # print()
 
     if not self.json_get(data, ["previously", "player", "name"]): # Avoid sounds from playing upon player change
       # Kill sound
       if self.json_get(data, ["previously", "player", "match_stats", "kills"]):
         self.logger.info("Kill")
-        self.play_sound(KILL_SOUND)
+        self.sounds.play_sound("kill")
       
       # Death sound
       if self.json_get(data, ["previously", "player", "match_stats", "deaths"]):
         self.logger.info("Death")
-        self.play_sound(DEATH_SOUND)
+        self.sounds.play_sound("death")
       
       # Round end sound
       if self.json_get(data, ["previously", "round", "phase"]) == "live":
@@ -71,21 +95,31 @@ class GSIHandler(BaseHTTPRequestHandler):
             # Round win
             if self.json_get(data, ["previously", "player", "match_stats", "mvps"]):
               self.logger.info("Mvp won")
-              self.play_sound(MVP_SOUND)
+              self.sounds.play_sound("mvp")
             else:
               self.logger.info("Round won")
-              self.play_sound(WIN_SOUND)
+              self.sounds.play_sound("win")
           else:
             # Round loss
             self.logger.info("Round loss")
-            self.play_sound(LOSS_SOUND)
+            self.sounds.play_sound("loss")
 
-      # Round start sound
+      # Freeze time sound
       elif self.json_get(data, ["previously", "round", "phase"]) == "over":
         if self.json_get(data, ["round", "phase"]) == "freezetime":
+          self.logger.info("Freeze time")
+          self.sounds.play_sound("freeze")
+      
+      # Round start sound
+      elif self.json_get(data, ["previously", "round", "phase"]) == "freezetime":
+        if self.json_get(data, ["round", "phase"]) == "live":
           self.logger.info("Round start")
-          self.play_sound(ROUND_START_SOUND)
-
+          self.sounds.play_sound("start")
+      
+      # Bomb sound
+      elif self.json_get(data, ["added", "round", "bomb"]):
+        self.logger.info("Bomb planted")
+        self.sounds.play_sound("bomb")
 
     # Send response back to the game
     self.send_response(200)
@@ -105,6 +139,8 @@ def main():
   server_address = ('127.0.0.1', PORT)
   httpd = HTTPServer(server_address, GSIHandler)
   GSIHandler.logger = logger
+  sounds = Sounds(logger)
+  GSIHandler.sounds = sounds
   logger.info(f"GSI Server listening on {server_address[0]}:{server_address[1]}")
   logger.info("Waiting for data...\n")
   
