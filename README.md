@@ -13,16 +13,22 @@ Currently, sounds can be added for the following events:
 * Round win
 * Round win (mvp)
 * Round loss
+* Freeze time
 * Round start
+* Bomb planted
+* Round 10 second warning (via round start)
+* Bomb 10 second warning (via bomb planted)
+
+The round start and bomb planted sounds play at the beginning of the round and when the bomb is planted respectively.  Knowing the round time and bomb time allows for playing a sound when the time is almost up.  For example, to achieve a 10 seconds left sound on the bomb, create a sound file with 30 seconds of blank space at the beginning.
 
 ## Setup
 
 ### Requirements
 
-Python, playsound3
+Python, pygame
 
 ```
-pip install playsound3
+pip install pygame
 ```
 
 ### Game State Integration
@@ -39,7 +45,7 @@ Inside `config.py` modify `PORT` to the port number you wish to use for the GSI 
 
 ### Sound Configuration
 
-Inside `config.py` modify the sound variables with the path of the file you wish to play upon certain in game events.  Since `playsound3` is used, `.wav` and `.mp3` files are allowed.  Also since `playsound3` is used, this program cannot adjust volume and you must adjust the volume inside the file directly.
+Inside `config.py` modify the sound variables with the path of the file you wish to play upon certain in game events.  Since `pygame` is used, `.wav` and `.ogg` files are allowed.  Volume can be configured in the config.
 
 ## Usage
 
