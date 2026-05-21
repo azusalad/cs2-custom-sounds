@@ -1,5 +1,5 @@
 PORT = 4000
-DEBUG = 1
+DEBUG = 0
 
 # Sounds (.wav or .mp3 files)
 # Modify these with the paths to your sound files
@@ -13,4 +13,4 @@ KILL_SOUND = "sounds/killsound.wav"
 DEATH_SOUND = "sounds/failsound.wav"
 
 # Volume [0,1]
-VOLUME = 1
+VOLUME = 0.5

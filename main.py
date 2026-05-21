@@ -1,5 +1,4 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from playsound3 import playsound
 from pygame import mixer
 from pathlib import Path
 import json
