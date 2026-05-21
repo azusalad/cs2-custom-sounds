@@ -4,7 +4,7 @@ DEBUG = 0
 # Sounds (.wav or .mp3 files)
 # Modify these with the paths to your sound files
 WIN_SOUND = "sounds/your_team_won.wav"
-LOSS_SOUND = "sounds/your_team_lost.mp3"
+LOSS_SOUND = "sounds/your_team_lost.wav"
 MVP_SOUND = "sounds/mvp.wav"
 FREEZETIME_SOUND = "sounds/freeze.wav"
 START_SOUND = "sounds/start.wav"
