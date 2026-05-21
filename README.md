@@ -45,14 +45,20 @@ Inside `config.py` modify `PORT` to the port number you wish to use for the GSI 
 
 ### Sound Configuration
 
-Inside `config.py` modify the sound variables with the path of the file you wish to play upon certain in game events.  Since `pygame` is used, `.wav` and `.ogg` files are allowed.  Volume can be configured in the config.
+Inside `config.py` modify the sound variables with the path of the file you wish to play upon certain in game events.  Since `pygame` is used, `.wav` and `.ogg` files are allowed.  In the config, tuples are used for each sound.  The first item in the tuple is the path of the sound file to play and the second item is the volume to play that sound at.  Volume is a float that ranges from 0 to 1.  Here is an example:
+
+```
+WIN_SOUND = ("sounds/your_team_won.wav", 0.5)
+```
+
+This will play the `sounds/your_team_won.wav` file at 50% volume for the win sound.
 
 ## Usage
 
-Run the program:
+Change the working directory to the repository root folder.  Then run the program:
 
 ```
 python3 main.py
 ```
 
-Then start CS2.  The program can also be restarted while the game is running.  Note that sounds might not play on the first round.
+Then start CS2.  The program can also be restarted while the game is running.  Note that sometimes sounds might not play on the first round.  If you want to make sure the program is receiving data, set `DEBUG` to 1 in the config.

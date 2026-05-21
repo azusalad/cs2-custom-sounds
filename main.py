@@ -19,19 +19,21 @@ class Sounds:
   }
 
   # Sounds that require stopping start and bomb sounds first
-  STOPS_ROUND_START = {"loss", "win", "mvp"}
+  STOPS_ROUND_START = {"loss", "win", "mvp", "bomb"}
 
   def __init__(self, logger):
     mixer.init()
     self.logger = logger
     self.sounds = {}
-    for name, filepath in self.SOUND_MAP.items():
+    for name, t in self.SOUND_MAP.items():
+      filepath = t[0]
+      volume = t[1]
       a = Path(filepath)
       if a.exists() and filepath != "":
         sound = mixer.Sound(filepath)
       else:
-        sound = mixer.Sound("blank.wav")
-      sound.set_volume(VOLUME)
+        sound = mixer.Sound("sounds/blank.wav")
+      sound.set_volume(volume)
       self.sounds[name] = sound
 
   def play_sound(self, sound):
@@ -89,7 +91,7 @@ class GSIHandler(BaseHTTPRequestHandler):
       
       # Round end sound
       if self.json_get(data, ["previously", "round", "phase"]) == "live":
-        if self.json_get(data, ["round", "phase"]) == "over":
+        if self.json_get(data, ["round", "phase"]) in ["over", "freezetime"]:
           if self.json_get(data, ["player", "team"]) == self.json_get(data, ["round", "win_team"]):
             # Round win
             if self.json_get(data, ["previously", "player", "match_stats", "mvps"]):

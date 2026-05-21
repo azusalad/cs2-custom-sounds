@@ -1,3 +1,4 @@
 __pycache__/
-sounds/
+sounds/*
+!sounds/blank.wav
 venv/
