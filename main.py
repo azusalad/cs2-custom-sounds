@@ -91,7 +91,7 @@ class GSIHandler(BaseHTTPRequestHandler):
       
       # Round end sound
       if self.json_get(data, ["previously", "round", "phase"]) == "live":
-        if self.json_get(data, ["round", "phase"]) == "over":
+        if self.json_get(data, ["round", "phase"]) in ["over", "freezetime"]:
           if self.json_get(data, ["player", "team"]) == self.json_get(data, ["round", "win_team"]):
             # Round win
             if self.json_get(data, ["previously", "player", "match_stats", "mvps"]):

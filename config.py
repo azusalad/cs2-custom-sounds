@@ -1,5 +1,5 @@
 PORT = 4000
-DEBUG = 1
+DEBUG = 0
 
 # Sounds (.wav or .mp3 files)
 # Modify these with the paths to your sound files.  Volume is [0,1]
